@@ -1,6 +1,6 @@
 {
   "name": "drop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "dev": "concurrently -n next,files \"next dev -p 3050\" \"nodemon -q fileserver/index.ts\"",

@@ -10,6 +10,8 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-markup";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-json";
+import "prismjs/components/prism-yaml";
 import "prismjs/components/prism-css";
 import "prismjs/components/prism-jsx";
 import "prismjs/components/prism-tsx";
@@ -178,6 +180,8 @@ export default function Home() {
               disabled={loading || done}
             >
               <Select.Option value="plaintext">Plain Text</Select.Option>
+              <Select.Option value="json">JSON</Select.Option>
+              <Select.Option value="yaml">YAML</Select.Option>
               <Select.Option value="c">
                 <CIcon /> C
               </Select.Option>
