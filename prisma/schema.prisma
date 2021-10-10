@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./data.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Drop {
+  slug  String  @id @default(uuid())
+  name  String?
+  type  String
+  files File[]
+  url   String?
+}
+
+model File {
+  id       String @id @default(uuid())
+  dropSlug String
+  name     String
+  size     Int
+  drop     Drop   @relation(fields: [dropSlug], references: [slug])
+}

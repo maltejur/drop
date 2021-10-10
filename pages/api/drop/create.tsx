@@ -1,0 +1,66 @@
+import { NextApiRequest, NextApiResponse } from "next";
+import fs from "fs";
+import { validateSlug } from "lib/validate";
+import { Drop, PrismaClient } from "@prisma/client";
+
+const uploadDir = process.env.UPLOAD_LOCATION;
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+
+export default async function createDrop(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { slug, name, type, url } = (() => {
+    const { slug, name, type, url } = req.query;
+    if (!slug || !type) {
+      res.status(400).send("400 Bad Request");
+      return;
+    }
+    return {
+      slug: slug.toString(),
+      name: name?.toString(),
+      type: type.toString(),
+      url: url?.toString(),
+    };
+  })();
+
+  if (!validateSlug(slug)) {
+    res.status(400).send("400 Bad Request: Ivalid slug");
+    return;
+  }
+
+  const prisma = new PrismaClient();
+
+  const existingDrop = await prisma.drop.findUnique({ where: { slug } });
+
+  if (existingDrop) {
+    res.send(existingDrop.slug);
+    return;
+  }
+
+  let drop: Drop;
+  switch (type) {
+    case "redirect":
+      if (!url) {
+        res.status(400).send("400 Bad Request");
+        return;
+      }
+      drop = await prisma.drop.create({ data: { slug, name, type, url } });
+      res.send(drop.slug);
+      return;
+
+    case "paste":
+      drop = await prisma.drop.create({ data: { slug, name, type } });
+      res.send(drop.slug);
+      return;
+
+    case "files":
+      drop = await prisma.drop.create({ data: { slug, name, type } });
+      res.send(drop.slug);
+      return;
+
+    default:
+      res.status(400).send("400 Bad Request: Invalid type");
+      return;
+  }
+}
