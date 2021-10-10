@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "concurrently -n next,files \"next dev -p 3050\" \"nodemon -q fileserver/index.ts\"",
     "build": "next build",
-    "start": "next start",
+    "start": "concurrently -n next,files \"next start -p 3050\" \"ts-node fileserver/index.ts\"",
     "lint": "next lint"
   },
   "dependencies": {
