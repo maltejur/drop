@@ -45,7 +45,7 @@ export default class Uploader {
   }
 
   get done() {
-    return this.chunkPool.length === 0;
+    return this.chunkPool.length === 0 && this.uploadingChunks === 0;
   }
 
   addFiles(files: File[], ids: string[]) {
