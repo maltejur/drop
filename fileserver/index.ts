@@ -47,6 +47,18 @@ app.get("/thumbnail/:dropSlug/:fileName", async (req, res) => {
       res.send(
         await fs.promises.readFile(path.join("public", "imageres_19.ico"))
       );
+    else if (
+      ["zip", "7z", "xz", "gz", "tar", "rar"].includes(
+        fileName.split(".").pop()
+      )
+    )
+      res.send(
+        await fs.promises.readFile(path.join("public", "imageres_174.ico"))
+      );
+    else if (fileName.endsWith(".exe"))
+      res.send(
+        await fs.promises.readFile(path.join("public", "imageres_15.ico"))
+      );
     else
       res.send(
         await fs.promises.readFile(path.join("public", "shell32_1.ico"))

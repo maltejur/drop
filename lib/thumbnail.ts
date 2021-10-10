@@ -8,13 +8,13 @@ export default async function generateThumbnail(fileId: string) {
 
   if (mime.split("/")[0] === "image") {
     return await sharp(getFileDir(fileId))
-      .resize({ width: 100, height: 100, fit: "contain" })
+      .resize({ width: 200, height: 200, fit: "contain" })
       .toFormat("jpg")
       .toBuffer();
     // .then((data) => data.toString("base64url"));
   } else if (mime === "application/pdf") {
     return await pdfThumb(await fs.promises.readFile(getFileDir(fileId)), {
-      crop: { width: 100, height: 100, x: 0, y: 0, ratio: true },
+      crop: { width: 200, height: 200, x: 0, y: 0, ratio: true },
     }).then(async (data) => {
       const chunks = [];
       for await (let chunk of data) {

@@ -1,14 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button, Display, Text } from "@geist-ui/react";
-import { ArrowLeft, Download } from "@geist-ui/react-icons";
+import { ArrowLeft, Download, FullScreen } from "@geist-ui/react-icons";
 import HidableButton from "components/hidableButton";
 import Layout from "components/layout";
 import { getFile, getFileId } from "lib/db/file";
 import { getFileType } from "lib/files";
 import { GetServerSideProps } from "next";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NextLink from "next/link";
-import { response } from "express";
 import Hightlighted from "components/hightlighted";
 import { getLanguageFromFilename } from "lib/filetype";
 import { File as FileType } from "@prisma/client";
@@ -42,6 +41,11 @@ export default function File({
       <Layout
         footer={
           <>
+            <a href={`/file/${dropSlug}/${fileName}?view=true`}>
+              <HidableButton width={120} icon={<FullScreen />}>
+                Fullscreen
+              </HidableButton>
+            </a>
             <a href={`/file/${dropSlug}/${fileName}`}>
               <HidableButton type="success" width={110} icon={<Download />}>
                 Download
@@ -100,7 +104,7 @@ export default function File({
 
         .root :global(pre) {
           padding: 20px;
-          height: 60vh;
+          height: calc(60vh - 40px);
           overflow-y: auto;
         }
       `}</style>
