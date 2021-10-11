@@ -1,12 +1,3 @@
-import React, {
-  createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
 import humanFileSize from "lib/humanFileSize";
 import { UploadRequestParameters } from "lib/types";
 import { v4 as uuidv4 } from "uuid";
@@ -17,8 +8,8 @@ export default class Uploader {
   files: UploaderFile[] = [];
   chunks: UploaderFileChunk[] = [];
   chunkPool: UploaderFileChunk[] = [];
-  chunkSize = 500000;
-  concurrentChunks = 5;
+  chunkSize = 100000;
+  concurrentChunks = 10;
   onUpdate: () => void = () => {};
   onDone: () => void = () => {};
   uploadingChunks = 0;
