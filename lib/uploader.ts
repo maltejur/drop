@@ -59,19 +59,23 @@ export default class Uploader {
 
       // if MD5 is still calculating
       if (typeof chunk.file.md5 === "object") await chunk.file.md5;
-      await axios.post("/api/upload", await chunk.read(), {
-        params: {
-          fileId: chunk.file.id,
-          fileMd5: chunk.file.md5 as string,
-          currentChunk: chunk.index,
-          chunkSize: this.chunkSize,
-          totalSize: chunk.file.totalSize,
-        } as UploadRequestParameters,
-        headers: {
-          // "Content-Type": "application/octet-stream",
-          "Content-Type": "text/plain",
-        },
-      });
+      let success = false;
+      while (!success) {
+        const response = await axios.post("/api/upload", await chunk.read(), {
+          params: {
+            fileId: chunk.file.id,
+            fileMd5: chunk.file.md5 as string,
+            currentChunk: chunk.index,
+            chunkSize: this.chunkSize,
+            totalSize: chunk.file.totalSize,
+          } as UploadRequestParameters,
+          headers: {
+            // "Content-Type": "application/octet-stream",
+            "Content-Type": "text/plain",
+          },
+        });
+        success = response.status >= 200 && response.status < 400;
+      }
       chunk.uploaded = true;
       this.uploadingChunks--;
       this.onUpdate();
