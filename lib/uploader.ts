@@ -73,6 +73,7 @@ export default class Uploader {
             // "Content-Type": "application/octet-stream",
             "Content-Type": "text/plain",
           },
+          timeout: 15000,
         });
         success = response.status >= 200 && response.status < 400;
       }
