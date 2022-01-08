@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import FileType from "file-type";
+import { fileTypeFromFile } from "file-type";
 
 const uploadDir = process.env.UPLOAD_LOCATION;
 
@@ -9,7 +9,7 @@ export function getFileDir(dropSlug: string, fileId: string) {
 }
 
 export async function getFileType(dropSlug: string, fileId: string) {
-  const type = await FileType.fromFile(getFileDir(dropSlug, fileId));
+  const type = await fileTypeFromFile(getFileDir(dropSlug, fileId));
   return (
     type || {
       mime: "text/plain",
