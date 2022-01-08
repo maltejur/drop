@@ -11,6 +11,7 @@ import { getLanguageFromFilename } from "lib/filetype";
 import Link from "next/link";
 import Layout from "components/layout";
 import Hightlighted from "components/hightlighted";
+import DOWNLOAD_URL from "lib/downloadUrl";
 
 export default function DropIndex({
   drop,
@@ -28,7 +29,7 @@ export default function DropIndex({
         footer={
           <>
             <Spacer style={{ flexGrow: 1 }} />
-            <a href={`/file/${drop.slug}/${files[0].name}`}>
+            <a href={`${DOWNLOAD_URL}/${drop.slug}/${files[0].name}`} download>
               <HidableButton
                 icon={<Download />}
                 ml={0.5}
@@ -64,7 +65,7 @@ export default function DropIndex({
                 >
                   <a>
                     <img
-                      src={`/thumbnail/${drop.slug}/${file.name}`}
+                      src={`/api/thumbnail/${drop.slug}/${file.name}`}
                       key={file.name}
                       alt="Thumbnail"
                       onError={(event) =>
@@ -137,7 +138,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
     case "paste":
       const file = await getPaste(drop.slug);
-      const content = await getFile(file.id);
+      const content = await getFile(file.dropSlug, file.name);
       return {
         props: {
           paste: content.toString(),

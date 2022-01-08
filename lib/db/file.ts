@@ -27,3 +27,11 @@ export async function getFile(dropSlug: string, fileName: string) {
   prisma.$disconnect();
   return file;
 }
+export async function getFileById(id: string) {
+  const prisma = new PrismaClient();
+  const file = await prisma.file.findFirst({
+    where: { id },
+  });
+  prisma.$disconnect();
+  return file;
+}

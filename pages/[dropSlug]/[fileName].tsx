@@ -3,7 +3,7 @@ import { Button, Display, Text } from "@geist-ui/react";
 import { ArrowLeft, Download, FullScreen } from "@geist-ui/react-icons";
 import HidableButton from "components/hidableButton";
 import Layout from "components/layout";
-import { getFile, getFileId } from "lib/db/file";
+import { getFile } from "lib/db/file";
 import { getFileType } from "lib/files";
 import { GetServerSideProps } from "next";
 import React, { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import NextLink from "next/link";
 import Hightlighted from "components/hightlighted";
 import { getLanguageFromFilename } from "lib/filetype";
 import { File as FileType } from "@prisma/client";
+import DOWNLOAD_URL from "lib/downloadUrl";
 
 export default function File({
   dropSlug,
@@ -30,7 +31,7 @@ export default function File({
   const [text, setText] = useState<string>();
 
   useEffect(() => {
-    fetch(`/file/${dropSlug}/${fileName}`)
+    fetch(`${DOWNLOAD_URL}/${dropSlug}/${fileName}`)
       .then((response) => response.text())
       .then((response) => setText(response));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,12 +42,12 @@ export default function File({
       <Layout
         footer={
           <>
-            <a href={`/file/${dropSlug}/${fileName}?view=true`}>
+            <a href={`${DOWNLOAD_URL}/${dropSlug}/${fileName}`}>
               <HidableButton width={120} icon={<FullScreen />}>
                 Fullscreen
               </HidableButton>
             </a>
-            <a href={`/file/${dropSlug}/${fileName}`}>
+            <a href={`${DOWNLOAD_URL}/${dropSlug}/${fileName}`}>
               <HidableButton type="success" width={110} icon={<Download />}>
                 Download
               </HidableButton>
@@ -64,15 +65,18 @@ export default function File({
         </NextLink>
         <Display caption={fileName} shadow>
           {isImage ? (
-            <img src={`/file/${dropSlug}/${fileName}`} alt={fileName} />
+            <img
+              src={`${DOWNLOAD_URL}/${dropSlug}/${fileName}`}
+              alt={fileName}
+            />
           ) : isPdf ? (
-            <iframe src={`/file/${dropSlug}/${fileName}?view=true`} />
+            <iframe src={`${DOWNLOAD_URL}/${dropSlug}/${fileName}`} />
           ) : isText ? (
             <Hightlighted language={getLanguageFromFilename(fileName)}>
               {text}
             </Hightlighted>
           ) : (
-            <a href={`/file/${dropSlug}/${fileName}`}>
+            <a href={`${DOWNLOAD_URL}/${dropSlug}/${fileName}`} download>
               <Button icon={<Download />} type="success">
                 Download
               </Button>
@@ -116,7 +120,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const dropSlug = ctx.query.dropSlug.toString();
   const fileName = ctx.query.fileName.toString();
   const file = await getFile(dropSlug, fileName);
-  const { mime } = await getFileType(file.id);
+  const { mime } = await getFileType(dropSlug, fileName);
 
   return {
     props: { dropSlug, fileName, mime, file },

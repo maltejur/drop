@@ -4,12 +4,12 @@ import FileType from "file-type";
 
 const uploadDir = process.env.UPLOAD_LOCATION;
 
-export function getFileDir(id: string) {
-  return path.join(uploadDir, id);
+export function getFileDir(dropSlug: string, fileId: string) {
+  return path.join(uploadDir, dropSlug, fileId);
 }
 
-export async function getFileType(id: string) {
-  const type = await FileType.fromFile(getFileDir(id));
+export async function getFileType(dropSlug: string, fileId: string) {
+  const type = await FileType.fromFile(getFileDir(dropSlug, fileId));
   return (
     type || {
       mime: "text/plain",
@@ -17,6 +17,6 @@ export async function getFileType(id: string) {
   );
 }
 
-export function getFile(id: string) {
-  return fs.promises.readFile(getFileDir(id));
+export function getFile(dropSlug: string, fileId: string) {
+  return fs.promises.readFile(getFileDir(dropSlug, fileId));
 }

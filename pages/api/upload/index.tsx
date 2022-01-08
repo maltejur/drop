@@ -5,6 +5,7 @@ import os from "os";
 import crypto from "crypto";
 import parseDataUrl from "lib/parseDataUrl";
 import exists from "lib/exists";
+import { getFile, getFileById } from "lib/db/file";
 
 const lock = new Set<string>();
 
@@ -61,11 +62,16 @@ export default async function Upload(
 
     console.log(`${fileId}: all chunks uploaded, merging chunks`);
 
+    const { dropSlug, name } = await getFileById(fileId);
+    const directory = path.join(uploadDir, dropSlug);
+    const filename = path.join(directory, name);
+    await fs.promises.mkdir(directory, { recursive: true });
+
     uploadedChunks.sort();
     let md5 = crypto.createHash("md5");
     for (const file of uploadedChunks) {
       const chunkContent = await fs.promises.readFile(file);
-      await fs.promises.appendFile(path.join(uploadDir, fileId), chunkContent);
+      await fs.promises.appendFile(filename, chunkContent);
       md5.update(chunkContent);
     }
 

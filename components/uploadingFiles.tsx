@@ -1,8 +1,7 @@
-import { Drop } from "@prisma/client";
-import { Link, Progress, Spacer, Spinner, Text } from "@geist-ui/react";
+import { Progress, Spinner, Text } from "@geist-ui/react";
 import humanFileSize from "lib/humanFileSize";
 import { UploaderFile } from "lib/uploader";
-import { useRouter } from "next/dist/client/router";
+import DOWNLOAD_URL from "lib/downloadUrl";
 
 export default function UploadingFiles({
   dropSlug,
@@ -52,7 +51,9 @@ export default function UploadingFiles({
                   Copy link
                 </Text>
                 <Text small type="success" style={{ cursor: "pointer" }}>
-                  <a href={`/file/${dropSlug}/${file.file.name}`}>Download</a>
+                  <a href={`${DOWNLOAD_URL}/${dropSlug}/${file.file.name}`}>
+                    Download
+                  </a>
                 </Text>
               </>
             )}
