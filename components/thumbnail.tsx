@@ -13,7 +13,7 @@ export default function Thumbnail({ file }: { file: File }) {
   useEffect(() => {
     if (ogImageRef) {
       const image = ogImageRef.current;
-      if (image) setLoaded(true);
+      if (image.complete) setLoaded(true);
       image.addEventListener("load", loadListener);
       return () => image.removeEventListener("load", loadListener);
     }
