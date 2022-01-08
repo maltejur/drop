@@ -330,12 +330,6 @@ export default function Home() {
         <input {...getInputProps()} />
       </Layout>
       <style jsx>{`
-         {
-          /* .root :global(.with-label) {
-          background-color: white !important;
-        } */
-        }
-
         .dropHere {
           width: 100%;
           height: 100%;
