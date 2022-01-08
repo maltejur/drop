@@ -31,9 +31,10 @@ export default function File({
   const [text, setText] = useState<string>();
 
   useEffect(() => {
-    fetch(`${DOWNLOAD_URL}/${dropSlug}/${fileName}`)
-      .then((response) => response.text())
-      .then((response) => setText(response));
+    if (isText)
+      fetch(`${DOWNLOAD_URL}/${dropSlug}/${fileName}`)
+        .then((response) => response.text())
+        .then((response) => setText(response));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

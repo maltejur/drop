@@ -25,8 +25,7 @@ export default function Hightlighted({
   noBorder?: boolean;
 }) {
   const highlighted = useMemo(() => {
-    if (children) {
-      console.log(language);
+    if (children && languages[language]) {
       return highlight(children, languages[language], language);
     }
   }, [language, children]);

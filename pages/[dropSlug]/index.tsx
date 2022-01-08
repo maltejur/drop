@@ -12,6 +12,7 @@ import Link from "next/link";
 import Layout from "components/layout";
 import Hightlighted from "components/hightlighted";
 import DOWNLOAD_URL from "lib/downloadUrl";
+import Thumbnail from "components/thumbnail";
 
 export default function DropIndex({
   drop,
@@ -64,15 +65,7 @@ export default function DropIndex({
                   key={file.id}
                 >
                   <a>
-                    <img
-                      src={`/api/thumbnail/${drop.slug}/${file.name}`}
-                      key={file.name}
-                      alt="Thumbnail"
-                      onError={(event) =>
-                        ((event.target as HTMLImageElement).src =
-                          "/shell32_1.ico")
-                      }
-                    />
+                    <Thumbnail file={file} />
                     <Text type="secondary" margin={0} small>
                       {file.name}
                     </Text>
