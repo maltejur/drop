@@ -43,7 +43,7 @@ export default function UploadingFiles({
                   style={{ cursor: "pointer" }}
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      `${window.location.protocol}//${window.location.host}/file/${dropSlug}/${file.file.name}`
+                      `${DOWNLOAD_URL}/${dropSlug}/${file.file.name}`
                     );
                   }}
                   mr={0.6}
