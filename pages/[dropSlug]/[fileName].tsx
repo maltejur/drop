@@ -42,7 +42,7 @@ export default function File({
       <Layout
         footer={
           <>
-            <a href={`${DOWNLOAD_URL}/${dropSlug}/${fileName}`}>
+            <a href={`${DOWNLOAD_URL}/${dropSlug}/${fileName}?view`}>
               <HidableButton width={120} icon={<FullScreen />}>
                 Fullscreen
               </HidableButton>
@@ -70,7 +70,7 @@ export default function File({
               alt={fileName}
             />
           ) : isPdf ? (
-            <iframe src={`${DOWNLOAD_URL}/${dropSlug}/${fileName}`} />
+            <iframe src={`${DOWNLOAD_URL}/${dropSlug}/${fileName}?view=true`} />
           ) : isText ? (
             <Hightlighted language={getLanguageFromFilename(fileName)}>
               {text}
