@@ -35,6 +35,13 @@ export default function Thumbnail({ file }: { file: File }) {
         alt="Thumbnail"
         ref={ogImageRef}
       />
+      <style jsx>{`
+        img {
+          width: 100px;
+          height: 100px;
+          object-fit: contain;
+        }
+      `}</style>
     </>
   );
 }

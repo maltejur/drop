@@ -25,9 +25,10 @@ export default function File({
   file: FileType;
 }) {
   const isImage = mime.startsWith("image");
+  const isVideo = mime.startsWith("video");
   const isPdf = mime === "application/pdf";
   const isText = mime.startsWith("text") && file.size < 10000;
-  const viewable = isImage || isPdf || isText;
+  const viewable = isImage || isPdf || isText || isVideo;
   const [text, setText] = useState<string>();
 
   useEffect(() => {
@@ -70,7 +71,7 @@ export default function File({
               src={`${DOWNLOAD_URL}/${dropSlug}/${fileName}`}
               alt={fileName}
             />
-          ) : isPdf ? (
+          ) : isPdf || isVideo ? (
             <iframe src={`${DOWNLOAD_URL}/${dropSlug}/${fileName}?view=true`} />
           ) : isText ? (
             <Hightlighted language={getLanguageFromFilename(fileName)}>
@@ -103,7 +104,7 @@ export default function File({
 
         .root :global(.display) :global(.content) {
           min-width: 100px;
-          ${isText || isPdf ? "width: 100%;" : "max-width: 100%;"}
+          ${isText || isPdf || isVideo ? "width: 100%;" : "max-width: 100%;"}
           max-height: 60vh;
         }
 

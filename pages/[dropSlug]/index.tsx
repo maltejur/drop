@@ -93,11 +93,6 @@ export default function DropIndex({
           overflow: hidden;
         }
 
-        .grid img {
-          width: 100px;
-          height: 100px;
-        }
-
         .grid :global(small) {
           display: block;
           text-align: center;

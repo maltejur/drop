@@ -3,13 +3,19 @@ import { getFileDir, getFileType } from "./files";
 import pdfThumb from "pdf-thumbnail";
 import fs from "fs";
 import { File } from "@prisma/client";
+import { exec } from "child_process";
 
 export default async function generateThumbnail(file: File) {
   const { mime } = await getFileType(file.dropSlug, file.name);
 
   if (mime.split("/")[0] === "image") {
     return await sharp(getFileDir(file.dropSlug, file.name))
-      .resize({ width: 200, height: 200, fit: "contain" })
+      .resize({
+        width: 200,
+        height: 200,
+        fit: "contain",
+        background: "#ffffff",
+      })
       .toFormat("jpg")
       .toBuffer();
     // .then((data) => data.toString("base64url"));
@@ -25,6 +31,21 @@ export default async function generateThumbnail(file: File) {
         chunks.push(chunk);
       }
       return Buffer.concat(chunks);
+    });
+  } else if (mime.split("/")[0] === "video") {
+    const tmpfile =
+      "/tmp/" + Math.random().toString(36).substring(2, 15) + ".jpg";
+    return new Promise((resolve) => {
+      exec(
+        `ffmpeg -i ${getFileDir(
+          file.dropSlug,
+          file.name
+        )} -ss 00:00:01.000 -vf 'scale=200:200:force_original_aspect_ratio=decrease' -vframes 1 ${tmpfile}`,
+
+        async () => {
+          resolve(await fs.promises.readFile(tmpfile));
+        }
+      );
     });
   } else {
     return undefined;
