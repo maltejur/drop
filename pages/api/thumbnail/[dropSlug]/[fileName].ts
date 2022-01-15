@@ -20,6 +20,7 @@ export default async function createDrop(
   const { mime } = await getFileType(file.dropSlug, file.name);
   const thumbnail = await generateThumbnail(file);
 
+  res.setHeader("Cache-Control", "max-age=604800");
   if (thumbnail) {
     res.send(thumbnail);
   } else {
