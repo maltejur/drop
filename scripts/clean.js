@@ -21,12 +21,13 @@ prisma.drop
       const files = await prisma.file.findMany({
         where: { dropSlug: drop.slug },
       });
+      await fs.promises.rm(path.join(uploadDir, file.dropSlug), {
+        force: true,
+        recursive: true,
+      });
       await Promise.all(
         files.map(async (file) => {
           await prisma.file.delete({ where: { id: file.id } });
-          await fs.promises.rm(path.join(uploadDir, file.dropSlug, file.name), {
-            force: true,
-          });
         })
       );
       await prisma.drop.delete({ where: { slug: drop.slug } });
