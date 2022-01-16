@@ -21,7 +21,7 @@ prisma.drop
       const files = await prisma.file.findMany({
         where: { dropSlug: drop.slug },
       });
-      await fs.promises.rm(path.join(uploadDir, file.dropSlug), {
+      await fs.promises.rm(path.join(uploadDir, drop.slug), {
         force: true,
         recursive: true,
       });
