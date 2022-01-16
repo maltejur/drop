@@ -85,6 +85,8 @@ export default function Layout({
           padding: ${padding}px !important;
           max-height: calc(100vh - 250px);
           overflow-y: auto;
+          display: flex;
+          flex-direction: column;
         }
 
         .dropHere :global(svg) {

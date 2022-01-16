@@ -16,7 +16,6 @@ export default async function createDrop(
       res.status(400).send("400 Bad Request");
       return;
     }
-    console.log(expires);
     return {
       slug: slug.toString(),
       name: name?.toString(),
@@ -39,8 +38,6 @@ export default async function createDrop(
     res.send(existingDrop.slug);
     return;
   }
-
-  console.log(expires);
 
   let drop: Drop;
   switch (type) {

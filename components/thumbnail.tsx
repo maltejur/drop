@@ -31,7 +31,7 @@ export default function Thumbnail({ file }: { file: File }) {
       />
       <img
         style={{ display: loaded ? "initial" : "none" }}
-        src={`/api/thumbnail/${file.dropSlug}/${file.name}`}
+        src={`/api/${file.dropSlug}/${file.name}/thumbnail`}
         alt="Thumbnail"
         ref={ogImageRef}
       />

@@ -228,6 +228,7 @@ export default function Home() {
               onChange={(expiry) => setExpires(expiry.toString())}
               width={"60px"}
               dropdownStyle={{ overflowX: "hidden" }}
+              disabled={loading || done}
             >
               <Select.Option label>Expires in ...</Select.Option>
               <Select.Option value="-1">Never</Select.Option>

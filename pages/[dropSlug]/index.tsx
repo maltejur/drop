@@ -3,8 +3,8 @@ import { getFiles, getPaste } from "lib/db/file";
 import { GetServerSideProps } from "next";
 import { getFile } from "lib/files";
 import { Drop, File } from "@prisma/client";
-import { Card, Spacer, Text } from "@geist-ui/react";
-import React, { useMemo } from "react";
+import { Button, Card, Spacer, Text } from "@geist-ui/react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import HidableButton from "components/hidableButton";
 import { Clock, Download } from "@geist-ui/react-icons";
 import { getLanguageFromFilename } from "lib/filetype";
@@ -14,6 +14,7 @@ import Hightlighted from "components/hightlighted";
 import DOWNLOAD_URL from "lib/downloadUrl";
 import Thumbnail from "components/thumbnail";
 import humanizeDuration from "humanize-duration";
+import axios from "axios";
 
 export default function DropIndex({
   drop,
@@ -27,6 +28,18 @@ export default function DropIndex({
   language?: string;
   expires: number;
 }) {
+  const [archiveLink, setArchiveLink] = useState<string>();
+  const [archiving, setArchiving] = useState(false);
+  const linkRef = useRef<HTMLAnchorElement>();
+
+  useEffect(() => {
+    fetch(`/api/${drop.slug}/checkArchive`).then(async (response) => {
+      if (response.ok) {
+        setArchiveLink(await response.text());
+      }
+    });
+  }, [drop.slug]);
+
   return (
     <div className="root">
       <Layout
@@ -96,6 +109,33 @@ export default function DropIndex({
                 </Card>
               ))}
             </div>
+            {files.length > 1 && (
+              <a href={archiveLink} ref={linkRef} className="archiveButton">
+                <Button
+                  type="success"
+                  icon={<Download />}
+                  loading={archiving}
+                  onClick={() => {
+                    if (archiveLink) return;
+                    setArchiving(true);
+                    fetch(`/api/${drop.slug}/archive`).then(
+                      async (response) => {
+                        if (response.ok) {
+                          setArchiveLink(await response.text());
+                          setArchiving(false);
+                          setTimeout(() => {
+                            linkRef.current.click();
+                          });
+                        }
+                      }
+                    );
+                  }}
+                  disabled={archiving}
+                >
+                  Download as Archive
+                </Button>
+              </a>
+            )}
           </>
         )}
       </Layout>
@@ -133,6 +173,11 @@ export default function DropIndex({
 
         .expiresHeader :global(svg) {
           margin-right: 7px;
+        }
+
+        .archiveButton {
+          align-self: center;
+          margin: 40px 0 40px 0;
         }
       `}</style>
     </div>
