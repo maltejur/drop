@@ -57,10 +57,13 @@ export default function HidableButton({
           width: ${done ? 100 : width}px;
         }
 
-        .root.hidden {
+        .root.hidden,
+        .root.hidden > :global(button) {
           width: 0 !important;
+          height: 0 !important;
           padding: 0 !important;
           opacity: 0 !important;
+          pointer-events: none;
         }
       `}</style>
     </div>

@@ -10,17 +10,19 @@ export default async function createDrop(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { slug, name, type, url } = (() => {
-    const { slug, name, type, url } = req.query;
+  const { slug, name, type, url, expires } = (() => {
+    const { slug, name, type, url, expires } = req.query;
     if (!slug || !type) {
       res.status(400).send("400 Bad Request");
       return;
     }
+    console.log(expires);
     return {
       slug: slug.toString(),
       name: name?.toString(),
       type: type.toString(),
       url: url?.toString(),
+      expires: expires && new Date(Number(expires?.toString())),
     };
   })();
 
@@ -38,6 +40,8 @@ export default async function createDrop(
     return;
   }
 
+  console.log(expires);
+
   let drop: Drop;
   switch (type) {
     case "redirect":
@@ -45,17 +49,19 @@ export default async function createDrop(
         res.status(400).send("400 Bad Request");
         return;
       }
-      drop = await prisma.drop.create({ data: { slug, name, type, url } });
+      drop = await prisma.drop.create({
+        data: { slug, name, type, url, expires },
+      });
       res.send(drop.slug);
       return;
 
     case "paste":
-      drop = await prisma.drop.create({ data: { slug, name, type } });
+      drop = await prisma.drop.create({ data: { slug, name, type, expires } });
       res.send(drop.slug);
       return;
 
     case "files":
-      drop = await prisma.drop.create({ data: { slug, name, type } });
+      drop = await prisma.drop.create({ data: { slug, name, type, expires } });
       res.send(drop.slug);
       return;
 

@@ -6,23 +6,26 @@ import { Drop, File } from "@prisma/client";
 import { Card, Spacer, Text } from "@geist-ui/react";
 import React, { useMemo } from "react";
 import HidableButton from "components/hidableButton";
-import { Download } from "@geist-ui/react-icons";
+import { Clock, Download } from "@geist-ui/react-icons";
 import { getLanguageFromFilename } from "lib/filetype";
 import Link from "next/link";
 import Layout from "components/layout";
 import Hightlighted from "components/hightlighted";
 import DOWNLOAD_URL from "lib/downloadUrl";
 import Thumbnail from "components/thumbnail";
+import humanizeDuration from "humanize-duration";
 
 export default function DropIndex({
   drop,
   paste,
   files,
+  expires,
 }: {
   drop: Drop;
   paste?: string;
   files?: File[];
   language?: string;
+  expires: number;
 }) {
   return (
     <div className="root">
@@ -30,20 +33,38 @@ export default function DropIndex({
         footer={
           <>
             <Spacer style={{ flexGrow: 1 }} />
+            {expires > 0 && (
+              <>
+                <Clock size="15px" />
+                <div>
+                  Expires in {humanizeDuration(expires, { largest: 1 })}
+                </div>
+              </>
+            )}
             <a href={`${DOWNLOAD_URL}/${drop.slug}/${files[0].name}`} download>
               <HidableButton
                 icon={<Download />}
                 ml={0.5}
                 type={"success"}
                 width={110}
-                hidden={!paste}
               >
                 Download
               </HidableButton>
             </a>
           </>
         }
-        header={paste && files[0].name}
+        header={
+          paste
+            ? files[0].name
+            : expires > 0 && (
+                <div className="expiresHeader">
+                  <Clock size="15px" />
+                  <div>
+                    Expires in {humanizeDuration(expires, { largest: 1 })}
+                  </div>
+                </div>
+              )
+        }
         footerHidden={!paste}
         padding={paste ? 0 : 30}
       >
@@ -56,24 +77,26 @@ export default function DropIndex({
           </Hightlighted>
         )}
         {files && !paste && (
-          <div className="grid">
-            {files.map((file) => (
-              <Card key={file.id} shadow>
-                <Link
-                  href={`/${drop.slug}/${file.name}`}
-                  passHref
-                  key={file.id}
-                >
-                  <a>
-                    <Thumbnail file={file} />
-                    <Text type="secondary" margin={0} small>
-                      {file.name}
-                    </Text>
-                  </a>
-                </Link>
-              </Card>
-            ))}
-          </div>
+          <>
+            <div className="grid">
+              {files.map((file) => (
+                <Card key={file.id} shadow>
+                  <Link
+                    href={`/${drop.slug}/${file.name}`}
+                    passHref
+                    key={file.id}
+                  >
+                    <a>
+                      <Thumbnail file={file} />
+                      <Text type="secondary" margin={0} small>
+                        {file.name}
+                      </Text>
+                    </a>
+                  </Link>
+                </Card>
+              ))}
+            </div>
+          </>
         )}
       </Layout>
       <style jsx>{`
@@ -102,6 +125,15 @@ export default function DropIndex({
           height: 1.2em;
           overflow: hidden;
         }
+
+        .expiresHeader {
+          display: flex;
+          align-items: center;
+        }
+
+        .expiresHeader :global(svg) {
+          margin-right: 7px;
+        }
       `}</style>
     </div>
   );
@@ -114,6 +146,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return {
       notFound: true,
     };
+  const expires = drop.expires ? drop.expires?.getTime() - Date.now() : -1;
+  delete drop.created;
+  delete drop.expires;
 
   switch (drop.type) {
     case "redirect":
@@ -132,6 +167,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
           paste: content.toString(),
           drop,
           files: [file],
+          expires,
         },
       };
 
@@ -141,6 +177,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         props: {
           files,
           drop,
+          expires,
         },
       };
 

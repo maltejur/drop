@@ -11,11 +11,13 @@ generator client {
 }
 
 model Drop {
-  slug  String  @id @default(uuid())
-  name  String?
-  type  String
-  files File[]
-  url   String?
+  slug    String    @id @default(uuid())
+  name    String?
+  type    String
+  files   File[]
+  url     String?
+  created DateTime  @default(now())
+  expires DateTime?
 }
 
 model File {

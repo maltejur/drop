@@ -13,6 +13,7 @@ export default function Layout({
   children,
   header,
   footer,
+  below,
   titleProps,
   contentProps,
   headerHidden = false,
@@ -22,6 +23,7 @@ export default function Layout({
   children: ReactNode;
   header?: ReactNode;
   footer?: ReactNode;
+  below?: ReactNode;
   titleProps?: TextProps;
   contentProps?: FieldsetContentProps;
   headerHidden?: boolean;
@@ -58,10 +60,10 @@ export default function Layout({
             !footer || footerHidden ? "fieldsetFooter hidden" : "fieldsetFooter"
           }
         >
-          <Spacer style={{ flexGrow: 1 }} />
           {footer}
         </Fieldset.Footer>
       </Fieldset>
+      {below}
       <style jsx>{`
         .root {
           display: flex;
@@ -90,6 +92,11 @@ export default function Layout({
         }
 
         .root :global(.fieldsetFooter) {
+          display: flex;
+          justify-content: flex-end;
+          flex-wrap: wrap;
+          gap: 6px;
+          height: 55px;
           transition: height 0.4s ease, padding 0.4s ease, opacity 0.4s ease;
         }
 
@@ -128,6 +135,12 @@ export default function Layout({
 
         .root .fieldsetHeader.hidden {
           opacity: 0 !important;
+        }
+
+        @media (max-width: 800px) {
+          .root :global(.fieldsetFooter) {
+            height: auto;
+          }
         }
       `}</style>
     </div>

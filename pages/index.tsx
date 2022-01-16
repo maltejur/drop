@@ -1,5 +1,11 @@
 import { Input, Select, Spacer, Text, useToasts } from "@geist-ui/react";
-import { Clipboard, Download, Link, Upload } from "@geist-ui/react-icons";
+import {
+  Clipboard,
+  Clock,
+  Download,
+  Link,
+  Upload,
+} from "@geist-ui/react-icons";
 import { validateUrl } from "lib/validate";
 import React, { useEffect, useMemo, useState } from "react";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
@@ -54,6 +60,7 @@ export default function Home() {
   const [done, setDone] = useState(false);
   const [uploaderFiles, setUploaderFiles] = useState<UploaderFile[]>([]);
   const validUrl = useMemo(() => validateUrl(pasteValue), [pasteValue]);
+  const [expires, setExpires] = useState("604800");
   const [, setToast] = useToasts();
 
   function onDrop(
@@ -66,7 +73,7 @@ export default function Home() {
     setDone(false);
   }
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     onDrop,
     noClick: true,
   });
@@ -83,6 +90,7 @@ export default function Home() {
       params: {
         slug: dropUrl,
         type: "files",
+        expires: expires !== "-1" && Date.now() + Number(expires) * 1000,
       },
     });
     const ids = await Promise.all(
@@ -111,6 +119,7 @@ export default function Home() {
       params: {
         slug: dropUrl,
         type: "paste",
+        expires: expires !== "-1" && Date.now() + Number(expires) * 1000,
       },
     });
     const name = filename || `paste.${getFiletypeFromLanguage(language)}`;
@@ -134,6 +143,7 @@ export default function Home() {
         slug: dropUrl,
         type: "redirect",
         url,
+        expires: expires !== "-1" && Date.now() + Number(expires) * 1000,
       },
     });
     setLoading(false);
@@ -211,6 +221,24 @@ export default function Home() {
         }
         footer={
           <>
+            <Clock color="gray" size="16px" />
+            <Select
+              placeholder="Expires in ..."
+              value={expires}
+              onChange={(expiry) => setExpires(expiry.toString())}
+              width={"60px"}
+              dropdownStyle={{ overflowX: "hidden" }}
+            >
+              <Select.Option label>Expires in ...</Select.Option>
+              <Select.Option value="-1">Never</Select.Option>
+              <Select.Option value="2419200">1 Month</Select.Option>
+              <Select.Option value="604800">1 Week</Select.Option>
+              <Select.Option value="172800">2 Days</Select.Option>
+              <Select.Option value="86400">1 Day</Select.Option>
+              <Select.Option value="21600">6 Hours</Select.Option>
+              <Select.Option value="3600">1 Hour</Select.Option>
+              <Select.Option value="1200">20 Minutes</Select.Option>
+            </Select>
             <Input
               label={!(loading || done) && urlPrefix}
               value={loading || done ? urlPrefix + dropUrl : dropUrl}
@@ -231,7 +259,6 @@ export default function Home() {
             />
             <HidableButton
               icon={<Upload />}
-              ml={1}
               width={130}
               loading={dropType === "files" && loading}
               done={dropType === "files" && done}
@@ -245,7 +272,7 @@ export default function Home() {
             </HidableButton>
             <HidableButton
               icon={<Upload />}
-              ml={1}
+              ml={0.5}
               width={140}
               loading={dropType === "files" && loading}
               disabled={
@@ -261,9 +288,8 @@ export default function Home() {
             </HidableButton>
             <HidableButton
               icon={<Clipboard />}
-              ml={1}
               type={!validUrl ? "success" : "default"}
-              width={135}
+              width={125}
               loading={dropType === "paste" && loading}
               done={dropType === "paste" && done}
               disabled={dropType !== "paste" && (loading || done)}
@@ -274,7 +300,6 @@ export default function Home() {
             </HidableButton>
             <HidableButton
               icon={<Link />}
-              ml={0.5}
               type={"success"}
               hidden={!validUrl || !pasteValue}
               width={150}
@@ -289,6 +314,14 @@ export default function Home() {
         }
         headerHidden={!pasteValue || dropType === "files"}
         footerHidden={!pasteValue && dropType !== "files"}
+        below={
+          !pasteValue &&
+          dropType !== "files" && (
+            <a className="below" onClick={() => open()}>
+              Or click here to upload files
+            </a>
+          )
+        }
         contentProps={getRootProps()}
         titleProps={{
           onClick: (event) => {
@@ -329,6 +362,7 @@ export default function Home() {
         )}
         <input {...getInputProps()} />
       </Layout>
+
       <style jsx>{`
         .dropHere {
           width: 100%;
@@ -348,6 +382,14 @@ export default function Home() {
           min-height: 200px;
           max-height: 100%;
           overflow-y: auto;
+        }
+
+        .below {
+          color: gray;
+          font-size: 12px;
+          transform: translateY(-30px);
+          margin-right: 10px;
+          align-self: flex-end;
         }
       `}</style>
     </div>
