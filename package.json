@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start -p 3050",
     "lint": "next lint",
-    "clean": "node scripts/clean"
+    "cron": "node scripts/cron"
   },
   "dependencies": {
     "@geist-ui/react": "^2.2.0",
