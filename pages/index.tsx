@@ -383,6 +383,8 @@ export default function Home() {
           min-height: 200px;
           max-height: 100%;
           overflow-y: auto;
+          font-family: monospace;
+          font-size: 12px;
         }
 
         .below {
