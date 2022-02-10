@@ -33,7 +33,7 @@ export default function File({
 
   useEffect(() => {
     if (isText)
-      fetch(`${DOWNLOAD_URL}/${dropSlug}/${fileName}`)
+      fetch(`${DOWNLOAD_URL}/${dropSlug}/${fileName}?view`)
         .then((response) => response.text())
         .then((response) => setText(response));
     // eslint-disable-next-line react-hooks/exhaustive-deps
