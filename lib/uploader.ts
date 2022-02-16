@@ -46,7 +46,12 @@ export default class Uploader {
   }
 
   async startUpload() {
+    this.onUpdate();
     if (this.uploadingChunks > 0) return;
+    if (this.chunkPool.length === 0) {
+      this.onDone();
+      return;
+    }
     const tryUploadChunk = async () => {
       if (
         this.uploadingChunks >= this.concurrentChunks ||

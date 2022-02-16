@@ -29,6 +29,14 @@ export default async function createDrop(
     res.status(400).send("400 Bad Request: Drop does not exist");
     return;
   }
+  const existingFile = await prisma.file.findFirst({
+    where: { name, dropSlug },
+  });
+  if (existingFile) {
+    res.status(400).send("400 Bad Request: File already exists");
+    return;
+  }
+
   const file = await prisma.file.create({
     data: { dropSlug, name, size: fileSize },
   });

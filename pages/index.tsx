@@ -36,7 +36,7 @@ import JavaIcon from "react-devicons/java/original";
 import CsharpIcon from "react-devicons/csharp/original";
 import generateId from "lib/generateId";
 import UploadingFiles from "components/uploadingFiles";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import Uploader, { UploaderFile } from "lib/uploader";
 import { getFiletypeFromLanguage } from "lib/filetype";
 import Layout from "components/layout";
@@ -104,12 +104,22 @@ export default function Home() {
             },
           })
           .then((response) => response.data as string)
+          .catch(() => {
+            setToast({
+              text: `Error uploading ${file.name}, the file probably already exists`,
+              type: "error",
+            });
+          })
       )
     );
+    console.log(ids);
     setStagedFiles([]);
-    uploader.addFiles(files, ids);
-    uploader.startUpload();
+    uploader.addFiles(
+      files.filter((_, index) => !!ids[index]),
+      ids.filter((id) => !!id) as string[]
+    );
     setUploaderFiles(uploader.files);
+    uploader.startUpload();
   }
 
   async function uploadPaste(content: string) {
@@ -123,16 +133,25 @@ export default function Home() {
       },
     });
     const name = filename || `paste.${getFiletypeFromLanguage(language)}`;
-    const upload = await axios.get("/api/upload/create", {
-      params: {
-        dropSlug: drop.data,
-        name,
-        fileSize: content.length,
-      },
-    });
-    uploader.addFiles([new File([content], name)], [upload.data]);
-    uploader.startUpload();
-    setUploaderFiles(uploader.files);
+    axios
+      .get("/api/upload/create", {
+        params: {
+          dropSlug: drop.data,
+          name,
+          fileSize: content.length,
+        },
+      })
+      .then((response) => {
+        uploader.addFiles([new File([content], name)], [response.data]);
+        uploader.startUpload();
+        setUploaderFiles(uploader.files);
+      })
+      .catch(() => {
+        setToast({
+          text: `Error uploading ${name}, the file probably already exist`,
+          type: "error",
+        });
+      });
   }
 
   async function uploadLink(url: string) {
@@ -232,6 +251,8 @@ export default function Home() {
             >
               <Select.Option label>Expires in ...</Select.Option>
               <Select.Option value="-1">Never</Select.Option>
+              <Select.Option value="15778800">6 Months</Select.Option>
+              <Select.Option value="7889400">3 Months</Select.Option>
               <Select.Option value="2419200">1 Month</Select.Option>
               <Select.Option value="604800">1 Week</Select.Option>
               <Select.Option value="172800">2 Days</Select.Option>
