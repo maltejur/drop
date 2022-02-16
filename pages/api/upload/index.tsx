@@ -5,7 +5,7 @@ import os from "os";
 import crypto from "crypto";
 import parseDataUrl from "lib/parseDataUrl";
 import exists from "lib/exists";
-import { getFile, getFileById } from "lib/db/file";
+import { getFileById } from "lib/db/file";
 
 const lock = new Set<string>();
 
@@ -93,3 +93,11 @@ export default async function Upload(
     res.status(202).end();
   }
 }
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "10mb",
+    },
+  },
+};
