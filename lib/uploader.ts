@@ -8,7 +8,7 @@ export default class Uploader {
   files: UploaderFile[] = [];
   chunks: UploaderFileChunk[] = [];
   chunkPool: UploaderFileChunk[] = [];
-  chunkSize = 5000000;
+  chunkSize = 1000000;
   concurrentChunks = 10;
   onUpdate: () => void = () => {};
   onDone: () => void = () => {};
