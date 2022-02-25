@@ -22,6 +22,7 @@ export default async function createDrop(
 
   res.setHeader("Cache-Control", "max-age=604800");
   if (thumbnail) {
+    res.setHeader("Content-Type", "image/jpeg");
     res.send(thumbnail);
   } else {
     res.setHeader("Content-Type", "image/x-icon");
