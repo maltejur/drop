@@ -26,7 +26,7 @@ export default function UploadingFiles({
                 <Spinner scale={0.7} ml={0.5} />
               </>
             )}
-            {file.uploadedSize  === file.totalSize || file.uploader.done && (
+            {(file.uploadedSize  === file.totalSize || file.uploader.done) && (
               <>
                 <Text mx={0.4}>-</Text>
                 <Text
