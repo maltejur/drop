@@ -11,7 +11,7 @@ import { getLanguageFromFilename } from "lib/filetype";
 import Link from "next/link";
 import Layout from "components/layout";
 import Hightlighted from "components/hightlighted";
-import { DOWNLOAD_URL } from "lib/downloadUrl";
+import { DOWNLOAD_URL, PERMA_URL } from "lib/downloadUrl";
 import Thumbnail from "components/thumbnail";
 import humanizeDuration from "humanize-duration";
 
@@ -53,7 +53,7 @@ export default function DropIndex({
                 </div>
               </>
             )}
-            <a href={`${DOWNLOAD_URL}/${drop.slug}/${files[0].name}`} download>
+            <a href={`${PERMA_URL}/${drop.slug}/${files[0].name}`} download>
               <HidableButton
                 icon={<Download />}
                 ml={0.5}

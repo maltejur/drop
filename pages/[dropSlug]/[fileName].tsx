@@ -11,7 +11,7 @@ import NextLink from "next/link";
 import Hightlighted from "components/hightlighted";
 import { getLanguageFromFilename } from "lib/filetype";
 import { File as FileType } from "@prisma/client";
-import { DOWNLOAD_URL } from "lib/downloadUrl";
+import { DOWNLOAD_URL, PERMA_URL } from "lib/downloadUrl";
 
 export default function File({
   dropSlug,
@@ -49,7 +49,7 @@ export default function File({
                 Fullscreen
               </HidableButton>
             </a>
-            <a href={`${DOWNLOAD_URL}/${dropSlug}/${fileName}`}>
+            <a href={`${PERMA_URL}/${dropSlug}/${fileName}`}>
               <HidableButton type="success" width={110} icon={<Download />}>
                 Download
               </HidableButton>
@@ -78,7 +78,7 @@ export default function File({
               {text}
             </Hightlighted>
           ) : (
-            <a href={`${DOWNLOAD_URL}/${dropSlug}/${fileName}`} download>
+            <a href={`${PERMA_URL}/${dropSlug}/${fileName}`} download>
               <Button icon={<Download />} type="success">
                 Download
               </Button>
