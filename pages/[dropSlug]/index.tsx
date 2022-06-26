@@ -11,10 +11,9 @@ import { getLanguageFromFilename } from "lib/filetype";
 import Link from "next/link";
 import Layout from "components/layout";
 import Hightlighted from "components/hightlighted";
-import DOWNLOAD_URL from "lib/downloadUrl";
+import { DOWNLOAD_URL } from "lib/downloadUrl";
 import Thumbnail from "components/thumbnail";
 import humanizeDuration from "humanize-duration";
-import axios from "axios";
 
 export default function DropIndex({
   drop,

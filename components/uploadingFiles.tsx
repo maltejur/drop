@@ -1,7 +1,7 @@
 import { Progress, Spinner, Text } from "@geist-ui/core";
 import humanFileSize from "lib/humanFileSize";
 import { UploaderFile } from "lib/uploader";
-import DOWNLOAD_URL from "lib/downloadUrl";
+import { DOWNLOAD_URL, PERMA_URL } from "lib/downloadUrl";
 
 export default function UploadingFiles({
   dropSlug,
@@ -43,7 +43,7 @@ export default function UploadingFiles({
                   style={{ cursor: "pointer" }}
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      `${DOWNLOAD_URL}/${dropSlug}/${file.file.name}`
+                      `${PERMA_URL}/${dropSlug}/${file.file.name}`
                     );
                   }}
                   mr={0.6}

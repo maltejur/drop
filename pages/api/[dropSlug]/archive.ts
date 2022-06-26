@@ -3,7 +3,7 @@ import { uploadDir } from "lib/files";
 import { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 import exists from "lib/exists";
-import DOWNLOAD_URL from "lib/downloadUrl";
+import { DOWNLOAD_URL } from "lib/downloadUrl";
 import { exec } from "child_process";
 
 export default async function Archive(

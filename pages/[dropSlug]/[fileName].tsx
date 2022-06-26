@@ -11,7 +11,7 @@ import NextLink from "next/link";
 import Hightlighted from "components/hightlighted";
 import { getLanguageFromFilename } from "lib/filetype";
 import { File as FileType } from "@prisma/client";
-import DOWNLOAD_URL from "lib/downloadUrl";
+import { DOWNLOAD_URL } from "lib/downloadUrl";
 
 export default function File({
   dropSlug,
