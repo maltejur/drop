@@ -179,6 +179,9 @@ export default function DropIndex({
           align-self: center;
           margin: 40px 0 40px 0;
         }
+        .archiveButton > :global(.btn) {
+          padding-left: 40px;
+        }
       `}</style>
     </div>
   );
