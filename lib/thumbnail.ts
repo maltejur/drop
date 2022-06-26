@@ -37,10 +37,10 @@ export default async function generateThumbnail(file: File) {
       "/tmp/" + Math.random().toString(36).substring(2, 15) + ".jpg";
     return new Promise((resolve, reject) => {
       exec(
-        `ffmpeg -i ${getFileDir(
+        `ffmpeg -i '${getFileDir(
           file.dropSlug,
           file.name
-        )} -ss 00:00:01.000 -vf 'scale=200:200:force_original_aspect_ratio=decrease' -vframes 1 ${tmpfile}`,
+        )}' -ss 00:00:01.000 -vf 'scale=200:200:force_original_aspect_ratio=decrease' -vframes 1 ${tmpfile}`,
 
         async (error) => {
           if (error) reject(error);
