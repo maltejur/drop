@@ -35,15 +35,16 @@ export default async function generateThumbnail(file: File) {
   } else if (mime.split("/")[0] === "video") {
     const tmpfile =
       "/tmp/" + Math.random().toString(36).substring(2, 15) + ".jpg";
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       exec(
         `ffmpeg -i ${getFileDir(
           file.dropSlug,
           file.name
         )} -ss 00:00:01.000 -vf 'scale=200:200:force_original_aspect_ratio=decrease' -vframes 1 ${tmpfile}`,
 
-        async () => {
-          resolve(await fs.promises.readFile(tmpfile));
+        async (error) => {
+          if (error) reject(error);
+          else resolve(await fs.promises.readFile(tmpfile));
         }
       );
     });
