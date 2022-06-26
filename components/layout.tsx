@@ -5,8 +5,8 @@ import {
   Spacer,
   Text,
   TextProps,
-} from "@geist-ui/react";
-import { UploadCloud } from "@geist-ui/react-icons";
+} from "@geist-ui/core";
+import { UploadCloud } from "@geist-ui/icons";
 import NextLink from "next/link";
 
 export default function Layout({

@@ -1,4 +1,4 @@
-import { Progress, Spinner, Text } from "@geist-ui/react";
+import { Progress, Spinner, Text } from "@geist-ui/core";
 import humanFileSize from "lib/humanFileSize";
 import { UploaderFile } from "lib/uploader";
 import DOWNLOAD_URL from "lib/downloadUrl";
@@ -26,7 +26,7 @@ export default function UploadingFiles({
                 <Spinner scale={0.7} ml={0.5} />
               </>
             )}
-            {(file.uploadedSize  === file.totalSize || file.uploader.done) && (
+            {(file.uploadedSize === file.totalSize || file.uploader.done) && (
               <>
                 <Text mx={0.4}>-</Text>
                 <Text
@@ -65,7 +65,11 @@ export default function UploadingFiles({
           <Progress
             value={file.uploadedSize / file.totalSize}
             max={1}
-            type={file.uploadedSize  === file.totalSize || file.uploader.done ? "success" : "default"}
+            type={
+              file.uploadedSize === file.totalSize || file.uploader.done
+                ? "success"
+                : "default"
+            }
           />
         </div>
       ))}

@@ -1,5 +1,5 @@
-import { Button } from "@geist-ui/react";
-import { Check } from "@geist-ui/react-icons";
+import { Button } from "@geist-ui/core";
+import { Check } from "@geist-ui/icons";
 import { MouseEventHandler, ReactNode } from "react";
 
 export default function HidableButton({

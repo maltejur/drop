@@ -1,5 +1,5 @@
-import { Button } from "@geist-ui/react";
-import { Plus, Share2, UploadCloud } from "@geist-ui/react-icons";
+import { Button } from "@geist-ui/core";
+import { Plus, Share2, UploadCloud } from "@geist-ui/icons";
 import React from "react";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import Link from "next/link";

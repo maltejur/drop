@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { Button, Display, Text } from "@geist-ui/react";
-import { ArrowLeft, Download, FullScreen } from "@geist-ui/react-icons";
+import { Button, Display, Text } from "@geist-ui/core";
+import { ArrowLeft, Download, FullScreen } from "@geist-ui/icons";
 import HidableButton from "components/hidableButton";
 import Layout from "components/layout";
 import { getFile } from "lib/db/file";

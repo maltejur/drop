@@ -1,11 +1,5 @@
-import { Input, Select, Spacer, Text, useToasts } from "@geist-ui/react";
-import {
-  Clipboard,
-  Clock,
-  Download,
-  Link,
-  Upload,
-} from "@geist-ui/react-icons";
+import { Input, Select, Spacer, Text, useToasts } from "@geist-ui/core";
+import { Clipboard, Clock, Download, Link, Upload } from "@geist-ui/icons";
 import { validateUrl } from "lib/validate";
 import React, { useEffect, useMemo, useState } from "react";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
@@ -61,7 +55,7 @@ export default function Home() {
   const [uploaderFiles, setUploaderFiles] = useState<UploaderFile[]>([]);
   const validUrl = useMemo(() => validateUrl(pasteValue), [pasteValue]);
   const [expires, setExpires] = useState("604800");
-  const [, setToast] = useToasts();
+  const { setToast } = useToasts();
 
   function onDrop(
     acceptedFiles: File[],

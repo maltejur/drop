@@ -1,4 +1,4 @@
-import { CssBaseline, GeistProvider } from "@geist-ui/react";
+import { CssBaseline, GeistProvider } from "@geist-ui/core";
 import Head from "next/head";
 import "styles/globals.css";
 
