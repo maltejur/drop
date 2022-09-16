@@ -28,7 +28,7 @@ export default async function Archive(
           console.error(err);
           res
             .status(500)
-            .send("500 Internal Server Error: Could not create archive");
+            .send("500 Internal Server Error: Could not create archive\n" + err.message);
           return;
         }
 
