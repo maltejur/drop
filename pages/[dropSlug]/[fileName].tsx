@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Button, Display, Text } from "@geist-ui/core";
+import { Button, Display } from "@geist-ui/core";
 import { ArrowLeft, Download, FullScreen } from "@geist-ui/icons";
 import HidableButton from "components/hidableButton";
 import Layout from "components/layout";
@@ -58,9 +58,15 @@ export default function File({
         }
         footerHidden={!viewable}
       >
-        <NextLink href={`/${dropSlug}`}>
+        <NextLink href={`/${dropSlug}`} legacyBehavior>
           <a>
-            <Button auto icon={<ArrowLeft />}>
+            <Button
+              auto
+              icon={<ArrowLeft />}
+              placeholder=""
+              onPointerEnterCapture={() => {}}
+              onPointerLeaveCapture={() => {}}
+            >
               Back
             </Button>
           </a>
@@ -79,7 +85,13 @@ export default function File({
             </Hightlighted>
           ) : (
             <a href={`${PERMA_URL}/${dropSlug}/${fileName}`} download>
-              <Button icon={<Download />} type="success">
+              <Button
+                icon={<Download />}
+                type="success"
+                placeholder=""
+                onPointerEnterCapture={() => {}}
+                onPointerLeaveCapture={() => {}}
+              >
                 Download
               </Button>
             </a>

@@ -14,7 +14,7 @@ if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 
 export default async function Upload(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const { fileId, fileMd5, currentChunk, chunkSize, totalSize, totalChunks } =
     (() => {
@@ -31,7 +31,7 @@ export default async function Upload(
         totalSize: Number.parseInt(totalSize.toString()),
         totalChunks: Math.ceil(
           Number.parseInt(totalSize.toString()) /
-            Number.parseInt(chunkSize.toString())
+            Number.parseInt(chunkSize.toString()),
         ),
       };
     })();
@@ -45,7 +45,7 @@ export default async function Upload(
   // TODO:_ STONKS funktioniert, das ausprobieren
   await fs.promises.writeFile(
     path.join(tmpDir, currentChunk.toString().padStart(16, "0")),
-    parseDataUrl(req.body).toBuffer()
+    parseDataUrl(req.body).toBuffer(),
   );
 
   let uploadedChunks: string[] = [];
@@ -81,7 +81,7 @@ export default async function Upload(
         .status(500)
         .send("500 Internal Server Error: checksums did not match");
       console.error(
-        `${fileId}: checksums did not match, client: ${fileMd5}, server: ${md5Digest}`
+        `${fileId}: checksums did not match, client: ${fileMd5}, server: ${md5Digest}`,
       );
       return;
     }

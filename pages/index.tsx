@@ -34,10 +34,8 @@ import axios, { AxiosResponse } from "axios";
 import Uploader, { UploaderFile } from "lib/uploader";
 import { getFiletypeFromLanguage } from "lib/filetype";
 import Layout from "components/layout";
-
-let urlPrefix = process.browser
-  ? `${window.location.protocol}//${window.location.host}/`
-  : "https://drop.shorsh.de/";
+import { GetServerSideProps } from "next";
+import { isValidPass } from "lib/auth";
 
 type DropType = "files" | "paste" | "link";
 
@@ -56,11 +54,16 @@ export default function Home() {
   const validUrl = useMemo(() => validateUrl(pasteValue), [pasteValue]);
   const [expires, setExpires] = useState("604800");
   const { setToast } = useToasts();
+  const [urlPrefix, setUrlPrefix] = useState("https://drop.polar.onl");
+
+  useEffect(() => {
+    setUrlPrefix(`${window.location.protocol}//${window.location.host}/`);
+  }, []);
 
   function onDrop(
     acceptedFiles: File[],
     fileRejections: FileRejection[],
-    event: DropEvent
+    event: DropEvent,
   ) {
     setDropType("files");
     setStagedFiles((stagedFiles) => [...stagedFiles, ...acceptedFiles]);
@@ -103,14 +106,14 @@ export default function Home() {
               text: `Error uploading ${file.name}, the file probably already exists`,
               type: "error",
             });
-          })
-      )
+          }),
+      ),
     );
     console.log(ids);
     setStagedFiles([]);
     uploader.addFiles(
       files.filter((_, index) => !!ids[index]),
-      ids.filter((id) => !!id) as string[]
+      ids.filter((id) => !!id) as string[],
     );
     setUploaderFiles(uploader.files);
     uploader.startUpload();
@@ -194,6 +197,9 @@ export default function Home() {
               onChange={(event) => setFilename(event.target.value)}
               disabled={loading || done}
               ml={0.5}
+              onPointerEnterCapture={() => {}}
+              onPointerLeaveCapture={() => {}}
+              crossOrigin=""
             />
             <Select
               ml={0.5}
@@ -201,6 +207,8 @@ export default function Home() {
               onChange={(value) => setLanguage(value.toString())}
               dropdownStyle={{ overflowX: "hidden" }}
               disabled={loading || done}
+              onPointerEnterCapture={() => {}}
+              onPointerLeaveCapture={() => {}}
             >
               <Select.Option value="plaintext">Plain Text</Select.Option>
               <Select.Option value="json">JSON</Select.Option>
@@ -242,6 +250,8 @@ export default function Home() {
               width={"60px"}
               dropdownStyle={{ overflowX: "hidden" }}
               disabled={loading || done}
+              onPointerEnterCapture={() => {}}
+              onPointerLeaveCapture={() => {}}
             >
               <Select.Option label>Expires in ...</Select.Option>
               <Select.Option value="-1">Never</Select.Option>
@@ -272,6 +282,9 @@ export default function Home() {
               placeholder="Drop URL"
               readOnly={loading || done}
               width={18}
+              onPointerEnterCapture={() => {}}
+              onPointerLeaveCapture={() => {}}
+              crossOrigin=""
             />
             <HidableButton
               icon={<Upload />}
@@ -413,3 +426,19 @@ export default function Home() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  if (!isValidPass(ctx.req.cookies["pass"])) {
+    return {
+      props: {},
+      redirect: {
+        permanent: false,
+        destination: "/login",
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};

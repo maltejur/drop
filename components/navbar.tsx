@@ -12,7 +12,7 @@ export default function Navbar({
   function onDrop(
     acceptedFiles: File[],
     fileRejections: FileRejection[],
-    event: DropEvent
+    event: DropEvent,
   ) {
     onFiles(acceptedFiles);
   }
@@ -21,7 +21,7 @@ export default function Navbar({
 
   return (
     <div className="navbar">
-      <Link href="/" passHref>
+      <Link href="/" passHref legacyBehavior>
         <a className="title">
           <UploadCloud size={30} />
           <h3>drop</h3>
@@ -36,11 +36,22 @@ export default function Navbar({
             icon={<Plus />}
             type={isDragActive ? "success" : "default"}
             ghost={isDragActive ? true : false}
+            placeholder=""
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           >
             Add files
           </Button>
         </div>
-        <Button type="success" auto scale={0.7} icon={<Share2 />}>
+        <Button
+          type="success"
+          auto
+          scale={0.7}
+          icon={<Share2 />}
+          placeholder=""
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
+        >
           Share
         </Button>
       </div>

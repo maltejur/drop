@@ -168,8 +168,8 @@ export class UploaderFileChunk {
       reader.readAsDataURL(
         this.file.file.slice(
           this.index * this.file.uploader.chunkSize,
-          (this.index + 1) * this.file.uploader.chunkSize
-        )
+          (this.index + 1) * this.file.uploader.chunkSize,
+        ),
       );
       reader.onload = (event) => {
         resolve(event.target.result.toString());

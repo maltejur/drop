@@ -3,7 +3,7 @@ export function getLanguageFromFilename(filename: string) {
   const filetype = split.length > 1 && split.pop();
   return (
     Object.entries(filetypes).find(
-      ([language, fFiletype]) => filetype === fFiletype
+      ([language, fFiletype]) => filetype === fFiletype,
     )?.[1] ||
     filetype ||
     "plaintext"

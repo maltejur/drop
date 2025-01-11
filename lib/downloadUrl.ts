@@ -6,7 +6,7 @@ if (!DOWNLOAD_URL)
   if (NODE_ENV === "development") DOWNLOAD_URL = "http://localhost:3000";
   else
     throw new Error(
-      "NEXT_PUBLIC_DOWNLOAD_URL is not defined, it has to point to the URL where the files are hosted (for example with nginx)"
+      "NEXT_PUBLIC_DOWNLOAD_URL is not defined, it has to point to the URL where the files are hosted (for example with nginx)",
     );
 
 if (!PERMA_URL) PERMA_URL = DOWNLOAD_URL;

@@ -8,7 +8,7 @@ import { exec } from "child_process";
 
 export default async function Archive(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const drop = await getDrop(req.query.dropSlug.toString());
 
@@ -28,13 +28,16 @@ export default async function Archive(
           console.error(err);
           res
             .status(500)
-            .send("500 Internal Server Error: Could not create archive\n" + err.message);
+            .send(
+              "500 Internal Server Error: Could not create archive\n" +
+                err.message,
+            );
           return;
         }
 
         res.send(`${DOWNLOAD_URL}/${drop.slug}/${drop.slug}.zip`);
         resolve();
-      }
+      },
     );
   });
 }

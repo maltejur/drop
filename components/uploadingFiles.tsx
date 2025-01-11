@@ -43,7 +43,7 @@ export default function UploadingFiles({
                   style={{ cursor: "pointer" }}
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      `${PERMA_URL}/${dropSlug}/${file.file.name}`
+                      `${PERMA_URL}/${dropSlug}/${file.file.name}`,
                     );
                   }}
                   mr={0.6}

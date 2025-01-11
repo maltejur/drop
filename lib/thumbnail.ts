@@ -24,7 +24,7 @@ export default async function generateThumbnail(file: File) {
       await fs.promises.readFile(getFileDir(file.dropSlug, file.name)),
       {
         crop: { width: 200, height: 200, x: 0, y: 0, ratio: true },
-      }
+      },
     ).then(async (data) => {
       const chunks = [];
       for await (let chunk of data) {
@@ -39,13 +39,13 @@ export default async function generateThumbnail(file: File) {
       exec(
         `ffmpeg -i '${getFileDir(
           file.dropSlug,
-          file.name
+          file.name,
         )}' -ss 00:00:01.000 -vf 'scale=200:200:force_original_aspect_ratio=decrease' -vframes 1 ${tmpfile}`,
 
         async (error) => {
           if (error) reject(error);
           else resolve(await fs.promises.readFile(tmpfile));
-        }
+        },
       );
     });
   } else {

@@ -29,7 +29,7 @@ export default function DropIndex({
 }) {
   const [archiveLink, setArchiveLink] = useState<string>();
   const [archiving, setArchiving] = useState(false);
-  const linkRef = useRef<HTMLAnchorElement>();
+  const linkRef = useRef<HTMLAnchorElement>(undefined);
 
   useEffect(() => {
     fetch(`/api/${drop.slug}/checkArchive`).then(async (response) => {
@@ -97,6 +97,7 @@ export default function DropIndex({
                     href={`/${drop.slug}/${file.name}`}
                     passHref
                     key={file.id}
+                    legacyBehavior
                   >
                     <a>
                       <Thumbnail file={file} />
@@ -126,10 +127,13 @@ export default function DropIndex({
                             linkRef.current.click();
                           });
                         }
-                      }
+                      },
                     );
                   }}
                   disabled={archiving}
+                  placeholder=""
+                  onPointerEnterCapture={() => {}}
+                  onPointerLeaveCapture={() => {}}
                 >
                   Download as Archive
                 </Button>

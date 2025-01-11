@@ -7,7 +7,7 @@ if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 
 export default async function createDrop(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const { dropSlug, name, fileSize } = (() => {
     const { dropSlug, name, fileSize } = req.query;

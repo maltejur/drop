@@ -33,7 +33,7 @@ export default function Layout({
   return (
     <div className="root">
       <div className="header">
-        <NextLink href="/" passHref>
+        <NextLink href="/" passHref legacyBehavior>
           <a>
             <Text h3 {...titleProps}>
               <UploadCloud />
@@ -99,7 +99,10 @@ export default function Layout({
           flex-wrap: wrap;
           gap: 6px;
           height: 55px;
-          transition: height 0.4s ease, padding 0.4s ease, opacity 0.4s ease;
+          transition:
+            height 0.4s ease,
+            padding 0.4s ease,
+            opacity 0.4s ease;
         }
 
         .root :global(.fieldsetFooter.hidden) {

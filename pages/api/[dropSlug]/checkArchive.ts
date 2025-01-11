@@ -6,7 +6,7 @@ import { PERMA_URL } from "lib/downloadUrl";
 
 export default async function CheckArchive(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const slug = req.query.dropSlug.toString();
 

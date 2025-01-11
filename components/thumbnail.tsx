@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Thumbnail({ file }: { file: File }) {
   const [loaded, setLoaded] = useState(false);
-  const ogImageRef = useRef<HTMLImageElement>();
+  const ogImageRef = useRef<HTMLImageElement>(undefined);
 
   function loadListener() {
     setLoaded(true);

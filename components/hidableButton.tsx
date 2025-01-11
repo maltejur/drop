@@ -48,12 +48,18 @@ export default function HidableButton({
         loading={loading && !done}
         ml={ml}
         onClick={!done && onClick}
+        placeholder=""
+        onPointerEnterCapture={() => {}}
+        onPointerLeaveCapture={() => {}}
       >
         {done ? "Done" : children}
       </Button>
       <style jsx>{`
         .root {
-          transition: width 0.4s ease, padding 0.4s ease, opacity 0.4s ease;
+          transition:
+            width 0.4s ease,
+            padding 0.4s ease,
+            opacity 0.4s ease;
           width: ${done ? 100 : width}px;
         }
 

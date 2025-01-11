@@ -7,7 +7,7 @@ import path from "path";
 
 export default async function createDrop(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const { dropSlug, fileName } = req.query as Record<string, string>;
   const file = await getFile(dropSlug, fileName);
@@ -28,23 +28,23 @@ export default async function createDrop(
     res.setHeader("Content-Type", "image/x-icon");
     if (mime.startsWith("text") && file.size < 10000)
       res.send(
-        await fs.promises.readFile(path.join("public", "imageres_19.ico"))
+        await fs.promises.readFile(path.join("public", "imageres_19.ico")),
       );
     else if (
       ["zip", "7z", "xz", "gz", "tar", "rar"].includes(
-        fileName.split(".").pop()
+        fileName.split(".").pop(),
       )
     )
       res.send(
-        await fs.promises.readFile(path.join("public", "imageres_174.ico"))
+        await fs.promises.readFile(path.join("public", "imageres_174.ico")),
       );
     else if (fileName.endsWith(".exe"))
       res.send(
-        await fs.promises.readFile(path.join("public", "imageres_15.ico"))
+        await fs.promises.readFile(path.join("public", "imageres_15.ico")),
       );
     else
       res.send(
-        await fs.promises.readFile(path.join("public", "shell32_1.ico"))
+        await fs.promises.readFile(path.join("public", "shell32_1.ico")),
       );
   }
 }
