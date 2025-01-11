@@ -1,6 +1,8 @@
 import { Button, Input, Text } from "@geist-ui/core";
 import { LogIn } from "@geist-ui/icons";
 import Layout from "components/layout";
+import { isValidPass } from "lib/auth";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -72,3 +74,19 @@ export default function Login() {
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  if (isValidPass(ctx.req.cookies["pass"])) {
+    return {
+      props: {},
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};

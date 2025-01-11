@@ -1,13 +1,15 @@
 import { ReactNode } from "react";
 import {
+  Button,
   Fieldset,
   FieldsetContentProps,
   Spacer,
   Text,
   TextProps,
 } from "@geist-ui/core";
-import { UploadCloud } from "@geist-ui/icons";
+import { LogOut, UploadCloud } from "@geist-ui/icons";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 
 export default function Layout({
   children,
@@ -30,8 +32,33 @@ export default function Layout({
   footerHidden?: boolean;
   padding?: number;
 }) {
+  const router = useRouter();
+
   return (
     <div className="root">
+      {router.pathname === "/" && (
+        <Button
+          placeholder=""
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
+          icon={<LogOut />}
+          scale={0.7}
+          style={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            zIndex: 1000,
+          }}
+          type="abort"
+          onClick={() => {
+            document.cookie =
+              "pass=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            router.push("/login");
+          }}
+        >
+          Sign Out
+        </Button>
+      )}
       <div className="header">
         <NextLink href="/" passHref legacyBehavior>
           <a>
