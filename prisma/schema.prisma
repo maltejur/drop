@@ -24,6 +24,6 @@ model File {
   id       String @id @default(uuid())
   dropSlug String
   name     String
-  size     BigInt
+  size     Int
   drop     Drop   @relation(fields: [dropSlug], references: [slug])
 }
