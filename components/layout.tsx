@@ -103,6 +103,23 @@ export default function Layout({
           max-width: calc(100% - 60px);
         }
 
+        @media screen and (max-width: 800px) {
+          .root {
+            max-width: 100%;
+          }
+
+          .root :global(.fieldset) {
+            border-radius: 0;
+            border-left: none;
+            border-right: none;
+          }
+
+          .root :global(.header) {
+            margin: 0 1em;
+            width: calc(100% - 2em);
+          }
+        }
+
         .root :global(.fieldset) {
           width: 100% !important;
         }
